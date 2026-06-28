@@ -19,4 +19,4 @@ python-multipart
 passlib[bcrypt]
 python-jose
 
-pytest
+langchain-text-splitters

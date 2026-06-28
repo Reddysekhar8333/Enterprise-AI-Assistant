@@ -12,6 +12,8 @@ from app.models.document import Document
 
 from app.rag.ingestion import ingest_document
 
+from app.services.s3_service import upload_file_to_s3
+
 router = APIRouter()
 
 UPLOAD_DIR = "documents"
@@ -32,9 +34,12 @@ async def upload_document(
     with open(file_path, "wb") as buffer:
         buffer.write(await file.read())
 
+    s3_path = upload_file_to_s3(file_path, file.filename)
+
     document = Document(
         filename=file.filename,
-        file_path=file_path
+        file_path=file_path,
+        s3_path=s3_path
     )
 
     db.add(document)
@@ -45,6 +50,7 @@ async def upload_document(
         "document_id": document.id,
         "filename": document.filename,
         "file_path": document.file_path,
+        "s3_path": document.s3_path,
         "uploaded_at": document.uploaded_at
     }
 

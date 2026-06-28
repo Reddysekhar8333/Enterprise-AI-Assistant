@@ -13,8 +13,7 @@ class Document(Base):
 
     file_path = Column(String(500), nullable=False)
 
-    uploaded_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now()
-    )
+    s3_path = Column(String(500), nullable=True)
+
+    uploaded_at = Column(DateTime(timezone=True), server_default=func.now())
 
